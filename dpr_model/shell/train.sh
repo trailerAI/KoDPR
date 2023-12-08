@@ -1,0 +1,4 @@
+# nohup python3 /home/jisukim/DPR/dpr_model/train.py --config_path /home/jisukim/DPR/dpr_model/config/train_batch_32.yaml > /home/jisukim/DPR/dpr_model/logs/train_output_gold32.log &
+# nohup python3 /home/jisukim/DPR/dpr_model/train.py --config_path /home/jisukim/DPR/dpr_model/config/train_batch_16.yaml > /home/jisukim/DPR/dpr_model/logs/train_output_gold16.log &
+# nohup python3 /home/jisukim/DPR/dpr_model/train.py --config_path /home/jisukim/DPR/dpr_model/config/train_batch_8.yaml > /home/jisukim/DPR/dpr_model/logs/train_output_gold8.log &
+nohup python3 /home/jisukim/DPR/dpr_model/train.py --config_path /home/jisukim/DPR/dpr_model/config/train_batch_4.yaml > /home/jisukim/DPR/dpr_model/logs/train_output_gold4.log &

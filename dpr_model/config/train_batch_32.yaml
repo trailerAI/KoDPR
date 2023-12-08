@@ -1,0 +1,23 @@
+Task : cls
+Experiment : AttnBaseline-Performance-reproduce
+seed : 42
+data: 
+    train: /ml_data/retrieval_data/train_preprocess2.json
+    valid : /ml_data/retrieval_data/valid_preprocess2.json
+    test: /ml_data/retrieval_data/test_preprocess2.json
+    context : /ml_data/retrieval_data/context.json
+    bm_25: False                      # gpu util 모니터링 해보고 효율 낮으면 올리기 ex) 20 -> 40
+hyper_params : 
+    tokenizer_max_length : 512
+    batch_size : 32
+    learning_rate : 0.000001
+    adam_eps : 0.00000001
+    adam_betas : [0.9, 0.999]
+    weight_decay : 0.0
+    epochs : 30
+    warmup_steps : 1200                                 # if 0 -> off the transpose option
+model:
+    text_model_path : klue/roberta-base      # one of BertPretrainedModel 
+    save_model_path : /home/jisukim/DPR/dpr_model/results/best_model_gold32
+    model_name : best_gold_32.pt
+    device: cuda:0
