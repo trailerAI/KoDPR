@@ -42,16 +42,16 @@ python inference.py --config_path ./config/inference_batch_4_test.yaml
 ```
 
 ## Results
-| Batch size  | Top@1 | Top@5 | Top@10 | Top@20 |
+| N  | Top@1 | Top@5 | Top@10 | Top@20 |
 |----|-------|-------|--------|--------|
 | 4  |       |       |        |        |
 | 8  |       |       |        |        |
 | 16 |       |       |        |        |
-| 32 |       |       |        |        |
+| 32 | 48.90%| 72.58%| 83.35% | 85.49% |
 
 
 ## Contributors
-[Jisu, Kim](https://github.com/merry555), [Juhwan, Lee](https://github.com/juhwanlee-diquest), [TakSung Heo](https://github.com/HeoTaksung), and [Minsu Jeong](https://github.com/skaeads12)
+[TakSung Heo](https://github.com/HeoTaksung), [Jisu, Kim](https://github.com/merry555), [Juhwan, Lee](https://github.com/juhwanlee-diquest),  and [Minsu Jeong](https://github.com/skaeads12)
 
 
 ## License
