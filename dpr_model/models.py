@@ -12,7 +12,7 @@ class Encoder(torch.nn.Module):
     def forward(self, encode):
         encode_output = self.encoder(**encode.to(self.device))
         encode_output = self.dropout(encode_output.last_hidden_state)
-        encode_output = torch.stack([encode_output[i][0] for i in range(len(encode_output))])
+        encode_output = encode_output[:, 0, :]
 
         return encode_output
 
