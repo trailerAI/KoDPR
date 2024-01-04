@@ -3,7 +3,14 @@ klue/roberta-base 모델을 활용한 한국어 DPR 모델 입니다.
 
 (본 실험은 [Dense Passage Retrieval for Open-Domain Question Answering](https://arxiv.org/abs/2004.04906) 논문을 기반으로 수행되었습니다.)
 
-## 데이터
+## Setting
+```
+cd KoDPR
+poetry shell
+poetry install
+```
+
+## Data
 데이터는 [ai-hub데이터와 위키피디아 데이터](https://drive.google.com/drive/folders/1Vs4pTehFCmPNgak3MxhRHbyuIGN-hCSx?usp=sharing)를 활용했습니다. 
 
 - train_preprocess.json: Ai-hub 데이터 셋을 정제한 학습 데이터 입니다.
