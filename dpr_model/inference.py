@@ -33,6 +33,7 @@ def read_config(config_path):
     print(config)
     return config
 
+
 def faiss_index(config):
     index = faiss.read_index(config['faiss']['path'])
     print(index.ntotal)
@@ -61,7 +62,7 @@ def retrieval_performance(data_length, labels):
 def inference(config, data_loader, encoder_tokenizer, index, context_list):
     device = torch.device(config['model']['device'])
 
-    selected_model_dataset = []
+    selection_model_dataset = []
     
     with torch.no_grad():
         for i, batch in tqdm(enumerate(data_loader)):
@@ -69,14 +70,14 @@ def inference(config, data_loader, encoder_tokenizer, index, context_list):
             question_encoding = encoder_tokenizer(question_batch, truncation=True, padding=True, max_length=config['hyper_params']['tokenizer_max_length'], return_tensors = 'pt').to(device)
 
             question_encoder = Encoder(config, device)
-            question_encoder.load_state_dict(torch.load(config['model']['passage_model_path']))
+            question_encoder.load_state_dict(torch.load(config['model']['question_model_path']))
             question_encoder.to(device)
             question_encoder.eval()
 
             question_cls = question_encoder(question_encoding)
 
             ## index 추출
-            _, indices = index.search(question_cls.cpu().numpy().astype("float32"), 40)
+            _, indices = index.search(question_cls.cpu().numpy().astype("float32"), 20)
 
             for key, value in enumerate(zip(indices, answer)):
                 labels = []
@@ -86,7 +87,7 @@ def inference(config, data_loader, encoder_tokenizer, index, context_list):
                     else:
                         labels.append(0)
                         
-                selected_model_dataset.append(
+                selection_model_dataset.append(
                     {
                         "question": question_batch[key],
                         "answer": answer[key],
@@ -95,7 +96,7 @@ def inference(config, data_loader, encoder_tokenizer, index, context_list):
                     }
                 )      
 
-        return selected_model_dataset
+        return selection_model_dataset
 
 
 def main(config):
@@ -121,16 +122,18 @@ def main(config):
     else:
         with open(f"/home/jisukim/DPR/selection_model/datasets/{spath}/selection_model_{dtype}_dataset.json", "w", encoding='utf-8') as f:
             json.dump(selection_model_dataset, f, ensure_ascii=False, indent=4)
-            
+
+
     if dtype == "test":
         test_labels = []
-        for i in range(len(data)):
-            test_labels.append(data[i]['labels'])
+        for i in range(len(selection_model_dataset)):
+            test_labels.append(selection_model_dataset[i]['labels'])
             
         test_acc = retrieval_performance(len(test_labels), test_labels)
         for i in [1, 5, 10, 15, 20]:
             print("Test Accuracy ===============")
             print(i, ':', test_acc[i])
+
 
 def parse_opt():
     parser = argparse.ArgumentParser()
