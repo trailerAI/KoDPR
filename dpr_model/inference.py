@@ -40,6 +40,24 @@ def faiss_index(config):
 
     return index
 
+
+def retrieval_performance(data_length, labels):
+    count_dict = {i+1:0 for i in range(len(labels[0]))}
+    for i in range(len(labels)):
+        if 1 in labels[i]:
+            idx = labels[i].index(1)
+            count_dict[idx+1] += 1
+
+    acc_count = 0
+    acc_dict = {}
+
+    for k, v in zip(count_dict.keys(), count_dict.values()):
+        acc_count += v
+        acc_dict[k] = acc_count/data_length
+        
+    return acc_dict
+
+
 def inference(config, data_loader, encoder_tokenizer, index, context_list):
     device = torch.device(config['model']['device'])
 
@@ -91,19 +109,28 @@ def main(config):
     context_data = pd.read_parquet(config["faiss"]["context"])
 
     context_list = np.array(context_data["text"])
-    selected_model_dataset = inference(config, data_loader, encoder_tokenizer, index, context_list)
+    selection_model_dataset = inference(config, data_loader, encoder_tokenizer, index, context_list)
 
     if not os.path.exists(f"/home/jisukim/DPR/selection_model/datasets/{spath}"):
         os.makedirs(f"/home/jisukim/DPR/selection_model/datasets/{spath}")
 
     if dtype == "train":
         num = config["data"]["num"]
-        with open(f"/home/jisukim/DPR/selection_model/datasets/{spath}/selected_model_{dtype}{num}_dataset.json", "w", encoding='utf-8') as f:
-            json.dump(selected_model_dataset, f, ensure_ascii=False, indent=4)
+        with open(f"/home/jisukim/DPR/selection_model/datasets/{spath}/selection_model_{dtype}{num}_dataset.json", "w", encoding='utf-8') as f:
+            json.dump(selection_model_dataset, f, ensure_ascii=False, indent=4)
     else:
-        with open(f"/home/jisukim/DPR/selection_model/datasets/{spath}/selected_model_{dtype}_dataset.json", "w", encoding='utf-8') as f:
-            json.dump(selected_model_dataset, f, ensure_ascii=False, indent=4)
-
+        with open(f"/home/jisukim/DPR/selection_model/datasets/{spath}/selection_model_{dtype}_dataset.json", "w", encoding='utf-8') as f:
+            json.dump(selection_model_dataset, f, ensure_ascii=False, indent=4)
+            
+    if dtype == "test":
+        test_labels = []
+        for i in range(len(data)):
+            test_labels.append(data[i]['labels'])
+            
+        test_acc = retrieval_performance(len(test_labels), test_labels)
+        for i in [1, 5, 10, 15, 20]:
+            print("Test Accuracy ===============")
+            print(i, ':', test_acc[i])
 
 def parse_opt():
     parser = argparse.ArgumentParser()
