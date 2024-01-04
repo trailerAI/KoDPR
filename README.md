@@ -51,9 +51,8 @@ python inference.py --config_path ./config/inference_batch_4_test.yaml
 
 
 ## Contributors
-[Jisu, Kim](https://github.com/merry555), [Juhwan, Lee](https://github.com/juhwanlee-diquest), TakSung Heo, and Minsu Jeong
+[Jisu, Kim](https://github.com/merry555), [Juhwan, Lee](https://github.com/juhwanlee-diquest), [TakSung Heo](https://github.com/HeoTaksung), and [Minsu Jeong](https://github.com/skaeads12)
 
 
 ## License
 Apache License 2.0 lisence
-...
