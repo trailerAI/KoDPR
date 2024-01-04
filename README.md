@@ -1,6 +1,8 @@
 # KoDPR
 klue/roberta-base 모델을 활용한 한국어 DPR 모델 입니다.
 
+(본 실험은 [Dense Passage Retrieval for Open-Domain Question Answering](https://arxiv.org/abs/2004.04906) 논문을 기반으로 수행되었습니다.)
+
 ## 데이터
 데이터는 [ai-hub데이터와 위키피디아 데이터](https://drive.google.com/drive/folders/1Vs4pTehFCmPNgak3MxhRHbyuIGN-hCSx?usp=sharing)를 활용했습니다. 
 
@@ -15,6 +17,19 @@ klue/roberta-base 모델을 활용한 한국어 DPR 모델 입니다.
 python train.py --config_path ./config/train_batch_4.yaml
 ```
 
-배치사이즈와 epoch을 변경하고 싶을 경우 config/train_batch_4.yaml 파일을 수정하면 됩니다.
+학습한 모델을 question, passage모델로 분할하고 싶을 경우 model_split.py를 참고해 실행합니다.
+
+
+## Faiss Index 생성
+```
+python gen_db.py --config_path ./config/faiss_batch_4.yaml
+```
+
+## Inference
+```
+python inference.py --config_path ./config/inference_batch_4_test.yaml
+```
+
+Inference결과 top k의 accuracy 결과를 확인할 수 있습니다.
 
 
