@@ -42,7 +42,6 @@ def negative_log_loss(question_vectors, passage_vectors, device):
 
     softmax_scores = torch.nn.functional.log_softmax(scores, dim=1)
     labels = torch.tensor(range(len(scores)), dtype=torch.long, device=device)
-    # labels = torch.tensor(positive_idx_per_question, device=device)
 
     loss = torch.nn.functional.nll_loss(
         softmax_scores,
