@@ -3,13 +3,10 @@ import torch
 import argparse
 import pandas as pd
 
-from models import Encoder, DPR, binary_cross_entropy_loss
-from evaluate import eval_model
+from models import Encoder, DPR
 
-from utils import model_save
 import warnings
-import wandb
-from dataloader import parse_data
+from dpr_dataloader import parse_data
 from tqdm import tqdm
 import yaml
 from transformers import AutoTokenizer
@@ -86,7 +83,8 @@ def inference(config, data_loader, encoder_tokenizer, index, context_list):
 def main(config):
     dtype = config["data"]["dtype"]   
     spath = config["data"]["spath"]
-    data_loader = parse_data(config, dtype)
+    
+    data_loader = parse_data(config, "test")
     encoder_tokenizer = AutoTokenizer.from_pretrained(config['model']['text_model_path'])
     index = faiss_index(config)
 
@@ -95,8 +93,8 @@ def main(config):
     context_list = np.array(context_data["text"])
     selected_model_dataset = inference(config, data_loader, encoder_tokenizer, index, context_list)
 
-    if not os.path.exists(spath):
-        os.makedirs(spath)
+    if not os.path.exists(f"/home/jisukim/DPR/selection_model/datasets/{spath}"):
+        os.makedirs(f"/home/jisukim/DPR/selection_model/datasets/{spath}")
 
     if dtype == "train":
         num = config["data"]["num"]
