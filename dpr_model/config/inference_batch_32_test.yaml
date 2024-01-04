@@ -15,8 +15,8 @@ hyper_params :
     batch_size : 32
 model:
     text_model_path : klue/roberta-base      # one of BertPretrainedModel 
-    device: cuda:1
-    passage_model_path: /home/jisukim/DPR/dpr_model/results/passage_gold_32.pt
+    device: cuda:0
+    question_model_path: /home/jisukim/DPR/dpr_model/results/question_gold_32.pt
 faiss:
     path: /home/jisukim/DPR/db/faiss_index/total_index_batch_32.index
     context: /home/jisukim/DPR/db/datasets/context_total.parquet
