@@ -42,7 +42,7 @@ python inference.py --config_path ./config/inference_batch_4_test.yaml
 ```
 
 ## Results
-| N  | Top@1 | Top@5 | Top@10 | Top@20 |
+| Batch size  | Top@1 | Top@5 | Top@10 | Top@20 |
 |----|-------|-------|--------|--------|
 | 4  |       |       |        |        |
 | 8  |       |       |        |        |
