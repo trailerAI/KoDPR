@@ -35,6 +35,8 @@ python gen_db.py --config_path ./config/faiss_batch_4.yaml
 ```
 
 ## Inference
+Inference결과 top k의 accuracy 결과를 확인할 수 있습니다.
+
 ```
 python inference.py --config_path ./config/inference_batch_4_test.yaml
 ```
@@ -47,6 +49,5 @@ python inference.py --config_path ./config/inference_batch_4_test.yaml
 | 16 |       |       |        |        |
 | 32 |       |       |        |        |
 
-Inference결과 top k의 accuracy 결과를 확인할 수 있습니다.
 
 
