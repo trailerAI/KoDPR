@@ -2,7 +2,7 @@
 한국어 DPR 모델 입니다.
 
 ## 데이터
-활용된 데이터는 [ai-hub데이터와 위키피디아 데이터]([이곳에 링크 주소](https://drive.google.com/drive/folders/1Vs4pTehFCmPNgak3MxhRHbyuIGN-hCSx?usp=sharing)https://drive.google.com/drive/folders/1Vs4pTehFCmPNgak3MxhRHbyuIGN-hCSx?usp=sharing)를 활용했습니다. 
+활용된 데이터는 [ai-hub데이터와 위키피디아 데이터]([https://drive.google.com/drive/folders/1Vs4pTehFCmPNgak3MxhRHbyuIGN-hCSx?usp=sharing])를 활용했습니다. 
 
 - train_preprocess.json: Ai-hub 데이터 셋을 정제한 학습 데이터 입니다.
 - valid_preprocess.json: Ai-hub 데이터 셋을 정제한 검증 데이터 입니다.
