@@ -56,13 +56,15 @@ def collate_fn(batch_size, batch):
     
 
 def parse_data(config, dtype):
-    dataset_path = config['data'][dtype]
+    dataset_path = config['data'][dtype] 
     positive_passage_dataset_path = config['data']['context']
     dataset = load_data(dataset_path)
     positive_passage_dataset = load_data(positive_passage_dataset_path)
     dataset = pd.DataFrame(dataset['data'])
     dataset['positive_passage'] = [ positive_passage_dataset[context_idx] for context_idx in dataset['context']]
 
+    if config['data']['inference']:
+        dtype = "test"
 
     if dtype == "train":
         data_loader = DataLoader(
@@ -85,9 +87,8 @@ def parse_data(config, dtype):
                                 drop_last=False,
                                 persistent_workers=True,
                                 collate_fn=partial(collate_fn, config['hyper_params']['batch_size'])
-                        )
+                    )
     
-    # Filter out incomplete batches and convert to list
     data_loader = list(filter(lambda x: x is not None, data_loader))        
 
     return data_loader
