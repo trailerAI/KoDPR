@@ -8,7 +8,6 @@ data:
     bm_25: False    
     inference: True 
     dtype: test   
-    num: 1
     spath: gold_32
 hyper_params : 
     tokenizer_max_length : 512
