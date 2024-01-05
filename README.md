@@ -22,23 +22,24 @@ poetry install
 
 
 ## KoDPR Model Train
+N: 32
 ```
-python train.py --config_path ./config/train_batch_4.yaml
+python train.py --config_path ./config/train_batch_32.yaml
 ```
 
 학습한 모델을 question, passage모델로 분할하고 싶을 경우 model_split.py를 참고해 실행합니다.
 
 
 ## Faiss Index 생성
+N: 32
 ```
-python gen_db.py --config_path ./config/faiss_batch_4.yaml
+python gen_db.py --config_path ./config/faiss_batch_32.yaml
 ```
 
 ## Inference
-Inference결과 top k의 accuracy 결과를 확인할 수 있습니다.
-
+Inference결과 top k의 accuracy 결과를 확인할 수 있습니다. (N: 32)
 ```
-python inference.py --config_path ./config/inference_batch_4_test.yaml
+python inference.py --config_path ./config/inference_batch_32_test.yaml
 ```
 
 ## Results
