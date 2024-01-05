@@ -6,7 +6,8 @@ data:
     valid : /ml_data/retrieval_data/valid_preprocess2.json
     test: /ml_data/retrieval_data/test_preprocess2.json
     context : /ml_data/retrieval_data/context.json
-    bm_25: False                      # gpu util 모니터링 해보고 효율 낮으면 올리기 ex) 20 -> 40
+    bm_25: False                      
+    inference: False
 hyper_params : 
     tokenizer_max_length : 512
     batch_size : 4
