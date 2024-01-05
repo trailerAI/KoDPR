@@ -103,7 +103,7 @@ def main(config):
     dtype = config["data"]["dtype"]   
     spath = config["data"]["spath"]
     
-    data_loader = parse_data(config, "test")
+    data_loader = parse_data(config, dtype)
     encoder_tokenizer = AutoTokenizer.from_pretrained(config['model']['text_model_path'])
     index = faiss_index(config)
 
@@ -115,13 +115,8 @@ def main(config):
     if not os.path.exists(f"/home/jisukim/DPR/selection_model/datasets/{spath}"):
         os.makedirs(f"/home/jisukim/DPR/selection_model/datasets/{spath}")
 
-    if dtype == "train":
-        num = config["data"]["num"]
-        with open(f"/home/jisukim/DPR/selection_model/datasets/{spath}/selection_model_{dtype}{num}_dataset.json", "w", encoding='utf-8') as f:
-            json.dump(selection_model_dataset, f, ensure_ascii=False, indent=4)
-    else:
-        with open(f"/home/jisukim/DPR/selection_model/datasets/{spath}/selection_model_{dtype}_dataset.json", "w", encoding='utf-8') as f:
-            json.dump(selection_model_dataset, f, ensure_ascii=False, indent=4)
+    with open(f"/home/jisukim/DPR/selection_model/datasets/{spath}/selection_model_{dtype}_dataset.json", "w", encoding='utf-8') as f:
+        json.dump(selection_model_dataset, f, ensure_ascii=False, indent=4)
 
 
     if dtype == "test":
