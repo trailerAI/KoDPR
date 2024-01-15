@@ -9,9 +9,9 @@ class DPR_Dataset(Dataset):
     def __init__(self, df):
         self.df = df
         self.question = df['question'].to_numpy()
-        self.positive_passage = df['positive_passage'].to_numpy()
-        self.bm_25 = df['bm_25'].to_numpy()
-        self.ctx_idx = df['context'].to_numpy()
+        self.positive_passage = df['context_txt'].to_numpy()
+        # self.bm_25 = df['bm_25'].to_numpy()
+        self.ctx_idx = df['context_idx'].to_numpy()
         self.answer = df['answer'].to_numpy()
 
     def __len__(self):
@@ -21,24 +21,18 @@ class DPR_Dataset(Dataset):
         return {
             "question": self.question[idx],
             "positive_passage": self.positive_passage[idx],
-            "bm_25": self.bm_25[idx],
+            # "bm_25": self.bm_25[idx],
             "ctx_idx": self.ctx_idx[idx],
             "answer": self.answer[idx]
         }
     
-def load_data(path: str):
-    print(path)
-    with open(path) as f:
-        dataset = json.load(f)    
-    
-    return dataset
 
 def collate_fn(batch_size, batch):
     unique_ctx_idx = list(set([item["ctx_idx"] for item in batch]))  # Get unique ctx_idx values in the batch
     batch_data = {
         "question": [],
         "positive_passage": [],
-        "bm_25": [],
+        # "bm_25": [],
         "ctx_idx": unique_ctx_idx,
         "answer": []
     }
@@ -46,7 +40,7 @@ def collate_fn(batch_size, batch):
     for item in batch:
         batch_data["question"].append(item["question"])
         batch_data["positive_passage"].append(item["positive_passage"])
-        batch_data["bm_25"].append(item["bm_25"])
+        # batch_data["bm_25"].append(item["bm_25"])
         batch_data["answer"].append(item["answer"])
 
     if len(batch_data["ctx_idx"]) == batch_size:
@@ -56,12 +50,7 @@ def collate_fn(batch_size, batch):
     
 
 def parse_data(config, dtype):
-    dataset_path = config['data'][dtype] 
-    positive_passage_dataset_path = config['data']['context']
-    dataset = load_data(dataset_path)
-    positive_passage_dataset = load_data(positive_passage_dataset_path)
-    dataset = pd.DataFrame(dataset['data'])
-    dataset['positive_passage'] = [ positive_passage_dataset[context_idx] for context_idx in dataset['context']]
+    dataset = pd.read_parquet(config['data'][dtype])
 
     if config['data']['inference']:
         dtype = "test"
