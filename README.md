@@ -12,34 +12,35 @@ poetry install
 
 
 ## Data
-데이터는 [ai-hub데이터와 위키피디아 데이터](https://drive.google.com/drive/folders/1Vs4pTehFCmPNgak3MxhRHbyuIGN-hCSx?usp=sharing)를 활용했습니다. 
-
-- train_preprocess.json: Ai-hub 데이터 셋을 정제한 학습 데이터 입니다.
-- valid_preprocess.json: Ai-hub 데이터 셋을 정제한 검증 데이터 입니다.
-- test_preprocess.json: Ai-hub 데이터 셋을 정제한 테스트 데이터 입니다.
-- context.json: Ai-hub 데이터 셋 중 context만 추출한 데이터 입니다.
-- context_total.parquet: FAISS 인덱스를 만들기 위해 위키피디아 데이터셋과 ai-hub의 context 데이터 셋을 klue/roberta-base를 활용해 토크나이징한 다음 512 길이로 chunking해서 저장한 파일 입니다.
+데이터는 [ai-hub데이터와 위키피디아 데이터]를 활용했습니다. 
 
 
-## KoDPR Model Train
-N: 32
+## Train
+DPR 모델 학습을 진행하기 위해 train_batch_{N}.yaml 설정을 수정한 다음, `shell/train.sh`를 실행하면 됩니다.
+
 ```
-python train.py --config_path ./config/train_batch_32.yaml
+chmod 775 ./shell/train.sh
+./train.sh
 ```
 
-학습한 모델을 question, passage모델로 분할하고 싶을 경우 model_split.py를 참고해 실행합니다.
+## Split Models
+Faiss index를 생성하고 inference 하기 위해, 학습한 모델을 question, passage모델로 분할합니다.
 
 
 ## Faiss Index 생성
-N: 32
+Faiss Index를 생성하기 위해 faiss_batch_32_{N}.yaml 설정을 수정한 다음, `shell/faiss.sh`를 실행하면 됩니다.
+
 ```
-python gen_db.py --config_path ./config/faiss_batch_32.yaml
+chmod 775 ./shell/faiss.sh
+./faiss.sh
 ```
 
 ## Inference
-Inference결과 top k의 accuracy 결과를 확인할 수 있습니다. (N: 32)
+Inference결과를 확인하기 위해 inference_batch_{N}_test.yaml 설정을 수정한 다음, `shell/inference.sh`를 실행하면 됩니다.
+
 ```
-python inference.py --config_path ./config/inference_batch_32_test.yaml
+chmod 775 ./shell/inference.sh
+./inference.sh
 ```
 
 ## Results
