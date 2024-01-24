@@ -66,18 +66,11 @@ def faiss_index(config, data_loader, encoder_tokenizer):
 
 def main(config):
     df = pd.read_parquet(config['data']['context'])
-    dataset = df['text'].tolist()
+    dataset = df['context_txt'].tolist()
     data_loader = DataLoader(dataset, batch_size=config['hyper_params']['batch_size'], shuffle=False)
     encoder_tokenizer = AutoTokenizer.from_pretrained(config['model']['text_model_path'])
     faiss_index(config, data_loader, encoder_tokenizer)
 
-
-def parse_opt():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--device', type=str, default="cuda:0" if torch.cuda.is_available() else "cpu")
-
-    opt = parser.parse_args()
-    return opt
 
 
 if __name__ == "__main__":
