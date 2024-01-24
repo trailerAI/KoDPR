@@ -43,6 +43,9 @@ chmod 775 ./shell/inference.sh
 ./inference.sh
 ```
 
+이때, Selection Model을 학습시키기 위한 데이터 셋을 생성할 경우, inference_batch_32_train.yaml, inference_batch_32_valid.yaml, inference_batch_32_valid.yaml 설정을 수정한 다음, `shell/inference.sh`를 실행하면 됩니다.
+
+
 ## Results
 | N  | Top@1 | Top@5 | Top@10 | Top@20 |
 |----|-------|-------|--------|--------|
