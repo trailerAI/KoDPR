@@ -25,7 +25,9 @@ chmod 775 ./shell/train.sh
 
 ## Split Models
 Faiss index를 생성하고 inference 하기 위해, 학습한 모델을 question, passage모델로 분할합니다.
-
+```
+python model_split.py --model_path ./results/best_model_gold32_3.pt --question_path ./results/question_gold_32.pt --passage_path ./results/passage_gold_32.pt
+```
 
 ## Faiss Index 생성
 Faiss Index를 생성하기 위해 faiss_batch_32_{N}.yaml 설정을 수정한 다음, `shell/faiss.sh`를 실행하면 됩니다.
