@@ -144,15 +144,6 @@ def train_epoch(model, data_loader, loss_fn, optimizer, scheduler, epoch, device
         scheduler.step()
 
 
-# 
-def parse_opt():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--device', type=str, default="cuda:0" if torch.cuda.is_available() else "cpu")
-
-    opt = parser.parse_args()
-    return opt
-
-
 if __name__ == "__main__":
     args = parse_args()
     config = read_config(args.config_path)
