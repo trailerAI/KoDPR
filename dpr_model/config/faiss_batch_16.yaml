@@ -1,5 +1,5 @@
 Task : DPR
-Experiment : Faiss-Batch8
+Experiment : Faiss-Batch16
 seed : 42
 data:
     context : /ml_data/retrieval_model/total_context.parquet # context 결과를 저장한 파일 경로를 설정합니다.
