@@ -112,10 +112,10 @@ def main(config):
     context_list = np.array(context_data["context_txt"])
     selection_model_dataset = inference(config, data_loader, encoder_tokenizer, index, context_list)
 
-    if not os.path.exists(f"/home/jisukim/DPR/selection_model/datasets/{spath}"):
-        os.makedirs(f"/home/jisukim/DPR/selection_model/datasets/{spath}")
+    if not os.path.exists(f"{spath}"):
+        os.makedirs(f"{spath}")
 
-    with open(f"/home/jisukim/DPR/selection_model/datasets/{spath}/selection_model_{dtype}_dataset.json", "w", encoding='utf-8') as f:
+    with open(f"{spath}/selection_model_{dtype}_dataset.json", "w", encoding='utf-8') as f:
         json.dump(selection_model_dataset, f, ensure_ascii=False, indent=4)
 
 
