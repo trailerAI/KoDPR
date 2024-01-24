@@ -109,7 +109,7 @@ def main(config):
 
     context_data = pd.read_parquet(config["faiss"]["context"])
 
-    context_list = np.array(context_data["text"])
+    context_list = np.array(context_data["context_txt"])
     selection_model_dataset = inference(config, data_loader, encoder_tokenizer, index, context_list)
 
     if not os.path.exists(f"/home/jisukim/DPR/selection_model/datasets/{spath}"):
