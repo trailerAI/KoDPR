@@ -1,0 +1,19 @@
+Task : DPR
+seed : 42
+data: 
+    train: /home/jisukim/DPR/dpr_model/dataset/train.parquet    # train 데이터 셋 경로를 설정합니다.
+    valid : /home/jisukim/DPR/dpr_model/dataset/valid.parquet   # valid 데이터 셋 경로를 설정합니다.
+    test: /home/jisukim/DPR/dpr_model/dataset/test.parquet      # valid 데이터 셋 경로를 설정합니다.
+    dtype: test                                                 # 데이터 타입을 설정합니다.
+    spath: gold_8                                               # inference후 question에 대해 passage가 부여된 데이터 저장 경로를 설정합니다.
+    inference: True                                             # inference 여부를 설정합니다 (True: inference할 경우).
+hyper_params : 
+    tokenizer_max_length : 512                                  # tokenizer의 max length를 지정합니다.
+    batch_size : 8                                              # batch_size를 지정합니다.
+model:
+    text_model_path : klue/roberta-base                                          # 모델 이름을 지정합니다.  
+    device: cuda:0                                                               # GPU device를 설정합니다. 
+    question_model_path: /home/jisukim/DPR/dpr_model/results/question_gold_8.pt  # question 모델이 저장된 경로를 설정합니다. 
+faiss:
+    path: /home/jisukim/DPR/db/total_index_batch_8.index         # faiss index가 저장된 경로를 설정합니다.
+    context: /ml_data/retrieval_model/total_context.parquet      # 전체 context가 저장된 경로를 설정합니다. 
