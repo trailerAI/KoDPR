@@ -1,24 +1,22 @@
-Task : cls
-Experiment : AttnBaseline-Performance-reproduce
+Task : DPR
+Experiment : Train-batch-16
 seed : 42
 data: 
-    train: /ml_data/retrieval_data/train_preprocess2.json
-    valid : /ml_data/retrieval_data/valid_preprocess2.json
-    test: /ml_data/retrieval_data/test_preprocess2.json
-    context : /ml_data/retrieval_data/context.json
+    train: /home/jisukim/DPR/dpr_model/dataset/train.parquet    # train 데이터 셋 경로를 설정합니다.
+    valid : /home/jisukim/DPR/dpr_model/dataset/valid.parquet   # valid 데이터 셋 경로를 설정합니다.
+    test: /home/jisukim/DPR/dpr_model/dataset/test.parquet      # valid 데이터 셋 경로를 설정합니다.
     bm_25: False                      
-    inference: False
+    inference: False                    # inference 여부를 설정합니다 (True: inference할 경우).
 hyper_params : 
-    tokenizer_max_length : 512
-    batch_size : 16
-    learning_rate : 0.000001
-    adam_eps : 0.00000001
-    adam_betas : [0.9, 0.999]
-    weight_decay : 0.0
-    epochs : 30
-    warmup_steps : 1200                                 # if 0 -> off the transpose option
+    tokenizer_max_length : 512          # tokenizer의 max length를 지정합니다. 
+    batch_size : 16                      # batch size를 지정합니다. 
+    learning_rate : 0.000001            # learning_rate를 지정합니다. 
+    adam_eps : 0.00000001               # adam_eps를 지정합니다. 
+    adam_betas : [0.9, 0.999]           # adam_betas를 지정합니다.
+    weight_decay : 0.0                  # weight_decay를 지정합니다.
+    epochs : 5                          # epochs를 지정합니다.
+    warmup_steps : 1200                 # warmup_steps를 지정합니다.         
 model:
-    text_model_path : klue/roberta-base      # one of BertPretrainedModel 
-    save_model_path : /home/jisukim/DPR/dpr_model/results/best_model_gold16
-    model_name : best_gold_16.pt
-    device: cuda:1
+    text_model_path : klue/roberta-base                                     # 모델 이름을 지정합니다.  
+    save_model_path : /home/jisukim/DPR/dpr_model/results/best_model_gold16  # DPR 모델을 저장할 경로를 설정합니다.
+    device: cuda:0                                                          # GPU device를 설정합니다.
