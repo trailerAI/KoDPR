@@ -34,22 +34,22 @@ class DPR(torch.nn.Module):
 # loss function
 def negative_log_loss(question_vectors, passage_vectors, device):
 
-    scores = torch.matmul(question_vectors, torch.transpose(passage_vectors, 0, 1))
+        scores = torch.matmul(question_vectors, torch.transpose(passage_vectors, 0, 1))
 
-    if len(question_vectors.size()) > 1:
-        q_num = question_vectors.size(0)
-        scores = scores.view(q_num, -1)
+        if len(question_vectors.size()) > 1:
+            q_num = question_vectors.size(0)
+            scores = scores.view(q_num, -1)
 
-    softmax_scores = torch.nn.functional.log_softmax(scores, dim=1)
-    labels = torch.tensor(range(len(scores)), dtype=torch.long, device=device)
+        softmax_scores = torch.nn.functional.log_softmax(scores, dim=1)
+        labels = torch.tensor(range(len(scores)), dtype=torch.long, device=device)
 
-    loss = torch.nn.functional.nll_loss(
-        softmax_scores,
-        labels,
-        reduction="mean",
-    )
+        loss = torch.nn.functional.nll_loss(
+            softmax_scores,
+            labels,
+            reduction="mean",
+        )
 
-    _, max_idxs = torch.max(softmax_scores, 1)
-    correct_predictions_count = (max_idxs == labels).to(max_idxs.device).sum()
+        _, max_idxs = torch.max(softmax_scores, 1)
+        correct_predictions_count = (max_idxs == labels).to(max_idxs.device).sum()
 
-    return loss, correct_predictions_count.item()
+        return loss, correct_predictions_count.item()
