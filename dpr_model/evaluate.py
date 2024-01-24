@@ -30,13 +30,14 @@ def eval_model(model, data_loader, optimizer, loss_fn, device, config, encoder_t
     model.eval()
     with torch.no_grad():
         for i, batch in enumerate(data_loader):
-            question_batch, positive_passage_batch, bm25_passage_batch  = batch['question'], batch['positive_passage'], batch['bm_25']
+            question_batch, positive_passage_batch  = batch['question'], batch['positive_passage']#, batch['bm_25']
+            # question_batch, positive_passage_batch, bm25_passage_batch  = batch['question'], batch['positive_passage'], batch['bm_25']
 
-            if config['data']['bm_25'] == True:
-                passage_encoding = encoder_tokenizer(positive_passage_batch+bm25_passage_batch, truncation=True, padding=True, max_length=config['hyper_params']['tokenizer_max_length'], return_tensors = 'pt').to(device)
+            # if config['data']['bm_25'] == True:
+            #     passage_encoding = encoder_tokenizer(positive_passage_batch+bm25_passage_batch, truncation=True, padding=True, max_length=config['hyper_params']['tokenizer_max_length'], return_tensors = 'pt').to(device)
 
-            else:
-                passage_encoding = encoder_tokenizer(positive_passage_batch, truncation=True, padding=True, max_length=config['hyper_params']['tokenizer_max_length'], return_tensors = 'pt').to(device)
+            # else:
+            passage_encoding = encoder_tokenizer(positive_passage_batch, truncation=True, padding=True, max_length=config['hyper_params']['tokenizer_max_length'], return_tensors = 'pt').to(device)
 
             question_encoding = encoder_tokenizer(question_batch, truncation=True, padding=True, max_length=105, return_tensors = 'pt').to(device)
             
