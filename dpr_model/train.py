@@ -37,6 +37,9 @@ def read_config(config_path):
 
 
 def main(config):
+    best_loss = np.Inf
+    patience = 0
+
     device = torch.device(config['model']['device'])
 
     # model load
@@ -72,7 +75,7 @@ def main(config):
     
     torch.cuda.empty_cache()
     # start training
-    for epoch in tqdm(range(config['hyper_params']['epochs'])):
+    for epoch in tqdm(range(1, config['hyper_params']['epochs']+1)):
         
         train_epoch(model, train_data_loader, negative_log_loss, optimizer, scheduler, epoch, device, config, encoder_tokenizer)
 
@@ -80,11 +83,23 @@ def main(config):
         eval_loss, eval_accuracy = eval_model(model, test_data_loader, optimizer, negative_log_loss, device, config, encoder_tokenizer)
 
         wandb.log({"eval_loss": eval_loss, "eval_accuracy": eval_accuracy})
+        
+        if eval_loss < best_loss:
+            best_loss = eval_loss
+            patience+=1
+        
+        if patience == 3:
+            model_name = config['model']['save_model_path'] + f'_{epoch}.pt'
 
-        model_name = config['model']['save_model_path'] + f'_{epoch}.pt'
+            torch.save(model.state_dict(), model_name)
+            print("Save best model!")
+            break
 
-        torch.save(model.state_dict(), model_name)
-        print("Save best model!")
+        if epoch == config['hyper_params']['epochs']:
+            model_name = config['model']['save_model_path'] + f'_{epoch}.pt'
+
+            torch.save(model.state_dict(), model_name)
+            print("Save best model!")
 
              
     print('Training finished!')
@@ -98,14 +113,17 @@ def train_epoch(model, data_loader, loss_fn, optimizer, scheduler, epoch, device
     accuracy = []
 
     for i, batch in tqdm(enumerate(data_loader)):
-        question_batch, positive_passage_batch, bm25_passage_batch  = batch['question'], batch['positive_passage'], batch['bm_25']
+        # question_batch, positive_passage_batch, bm25_passage_batch  = batch['question'], batch['positive_passage'], batch['bm_25']
+        question_batch, positive_passage_batch  = batch['question'], batch['positive_passage']
 
-        if config['data']['bm_25'] == True:
-            passage_encoding = encoder_tokenizer(positive_passage_batch + bm25_passage_batch, truncation=True, padding=True, max_length=config['hyper_params']['tokenizer_max_length'], return_tensors = 'pt').to(device)
-        else:
-            passage_encoding = encoder_tokenizer(positive_passage_batch, truncation=True, padding=True, max_length=config['hyper_params']['tokenizer_max_length'], return_tensors = 'pt').to(device)
+        # if config['data']['bm_25'] == True:
+        #     passage_encoding = encoder_tokenizer(positive_passage_batch + bm25_passage_batch, truncation=True, padding=True, max_length=config['hyper_params']['tokenizer_max_length'], return_tensors = 'pt').to(device)
+        # else:
+        passage_encoding = encoder_tokenizer(positive_passage_batch, truncation=True, padding=True, max_length=config['hyper_params']['tokenizer_max_length'], return_tensors = 'pt').to(device)
     
-        question_encoding = encoder_tokenizer(question_batch, truncation=True, padding=True, max_length=105, return_tensors = 'pt').to(device)  
+        question_encoding = encoder_tokenizer(question_batch, truncation=True, padding=True, max_length=105, return_tensors = 'pt').to(device)
+
+        
         questions_cls, passages_cls = model(question_encoding, passage_encoding)
     
         loss, correct_count = loss_fn(questions_cls, passages_cls, device)
