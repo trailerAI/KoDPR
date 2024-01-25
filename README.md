@@ -30,7 +30,7 @@ python model_split.py --model_path ./results/best_model_gold32_3.pt --question_p
 ```
 
 ## Faiss Index 생성
-Faiss Index를 생성하기 위해 faiss_batch_32_{N}.yaml 설정을 수정한 다음, `shell/faiss.sh`를 실행하면 됩니다.
+Faiss Index를 생성하기 위해 faiss_batch_{N}.yaml 설정을 수정한 다음, `shell/faiss.sh`를 실행하면 됩니다.
 
 ```
 chmod 775 ./shell/faiss.sh
